@@ -35,5 +35,10 @@ int main()
     cout<<"--------------------------------"<<endl;
     A aaaa;
     A &cc=aaaa;//如果不使用引用 则会调用拷贝构造函数
+    int x=3;
+    int &&xx=move(x);//std::move()只是产生一个右值表达式，并不改变x本身
+    int &xxx=x;
+    xx++;
+    cout<<x<<xx<<xxx<<endl;
     return 0;
 }
