@@ -63,7 +63,7 @@ class base{
     base(){};
     base(const base &p)=delete;//删除拷贝构造函数
     base& operator=(const base &p)=delete;//删除拷贝构造运算符
-    base(const base &&p)=delete;//删除移动构造函数
+    base(base &&p)=delete;//删除移动构造函数
     base& operator=(base &&p)=delete;//删除移动赋值运算符
     static base example;//如何说明当前example还是"空"的呢?
 };

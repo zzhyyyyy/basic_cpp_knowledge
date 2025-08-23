@@ -41,60 +41,81 @@
 // }
 
 
-// #条款04
+// #条款04 使用参数初始化表的效率会比有参构造函数快
+// #include <iostream>
+// #include <chrono> // 包含计时库
+
+// using namespace std;
+// using namespace std::chrono; // 使用chrono命名空间
+
+// class A{
+//     public:
+//     string a, b, c;
+//     A(string a, string b, string c) : a(a), b(b), c(c) {};
+// };
+
+// class B{
+//     public:
+//     string a, b, c;
+//     B(string a, string b, string c)
+//     {
+//         this->a = a;
+//         this->b = b;
+//         this->c = c;
+//     }
+// };
+
+// int main()
+// {
+//     // 测试 A 的耗时
+//     auto start_A = high_resolution_clock::now(); // 开始计时点A
+//     for (int i = 0; i < 1000000; i++) { // 增加循环次数以便测量
+//         A obj("leetcode", "acwing", "codeforce");
+//         // 防止循环被优化掉
+//         asm volatile("" : : "r,m"(obj) : "memory");
+//     }
+//     auto end_A = high_resolution_clock::now(); // 结束计时点A
+
+//     // 测试 B 的耗时
+//     auto start_B = high_resolution_clock::now(); // 开始计时点B
+//     for (int i = 0; i < 1000000; i++) {
+//         B obj("leetcode", "acwing", "codeforce");
+//         // 防止循环被优化掉
+//         asm volatile("" : : "r,m"(obj) : "memory");
+//     }
+//     auto end_B = high_resolution_clock::now(); // 结束计时点B
+
+//     // 计算耗时（转换为微秒 microseconds）
+//     auto duration_A = duration_cast<microseconds>(end_A - start_A).count();
+//     auto duration_B = duration_cast<microseconds>(end_B - start_B).count();
+
+//     // 输出结果
+//     cout << "Time taken by A (initialization list): " << duration_A << " microseconds" << endl;
+//     cout << "Time taken by B (assignment in body):  " << duration_B << " microseconds" << endl;
+
+//     double ratio = static_cast<double>(duration_B) / duration_A;
+//     cout << "B took " << ratio << " times longer than A." << endl;
+
+//     return 0;
+// }
 #include <iostream>
-#include <chrono> // 包含计时库
-
-using namespace std;
-using namespace std::chrono; // 使用chrono命名空间
-
-class A{
+class base{
+    std::string &namevalue;
+    const int agevalue;
     public:
-    string a, b, c;
-    A(string a, string b, string c) : a(a), b(b), c(c) {};
+    base(std::string &name,const int &value):namevalue(name),agevalue(value){};
+    // base(const base &p) //报错
+    // {
+    //     this->namevalue=p.namevalue;
+    //     this->agevalue=p.agevalue;
+    // }
 };
-
-class B{
-    public:
-    string a, b, c;
-    B(string a, string b, string c)
-    {
-        this->a = a;
-        this->b = b;
-        this->c = c;
-    }
-};
-
 int main()
 {
-    // 测试 A 的耗时
-    auto start_A = high_resolution_clock::now(); // 开始计时点A
-    for (int i = 0; i < 1000000; i++) { // 增加循环次数以便测量
-        A obj("leetcode", "acwing", "codeforce");
-        // 防止循环被优化掉
-        asm volatile("" : : "r,m"(obj) : "memory");
-    }
-    auto end_A = high_resolution_clock::now(); // 结束计时点A
+    std::string a ="aaa";
+    std::string b ="bbb";
+    base aa = base(a,1);
+    //base bb = aa;//正确 因为此时bb为初始化 相当于调用拷贝构造函数
+    base bb = base(b,2);
 
-    // 测试 B 的耗时
-    auto start_B = high_resolution_clock::now(); // 开始计时点B
-    for (int i = 0; i < 1000000; i++) {
-        B obj("leetcode", "acwing", "codeforce");
-        // 防止循环被优化掉
-        asm volatile("" : : "r,m"(obj) : "memory");
-    }
-    auto end_B = high_resolution_clock::now(); // 结束计时点B
-
-    // 计算耗时（转换为微秒 microseconds）
-    auto duration_A = duration_cast<microseconds>(end_A - start_A).count();
-    auto duration_B = duration_cast<microseconds>(end_B - start_B).count();
-
-    // 输出结果
-    cout << "Time taken by A (initialization list): " << duration_A << " microseconds" << endl;
-    cout << "Time taken by B (assignment in body):  " << duration_B << " microseconds" << endl;
-
-    double ratio = static_cast<double>(duration_B) / duration_A;
-    cout << "B took " << ratio << " times longer than A." << endl;
-
-    return 0;
 }

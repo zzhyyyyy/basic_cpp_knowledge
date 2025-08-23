@@ -17,7 +17,8 @@ void getfun(Animal& Animal){//基类引用可以引用子类对象,c++内部自�
 }
 int main()
 {
-    Animal *p = new dog();// 父类指针可以指向子类对象
+    Animal *p = new dog();// 父类指针可以指向子类对象 因为子类包含父类所有信息 只是有些(private域的不能访问)
+    // dog *p = new Animal() 报错 子类可能会存在一些自己新建的东西 父类不能够包含 但dog* 中dog域已经声明
     cat c;
     getfun(c);
     (*p).fun();
