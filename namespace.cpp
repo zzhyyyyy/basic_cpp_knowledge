@@ -1,6 +1,6 @@
 #include<iostream>
 
-namespace N
+namespace N//命名空间
 {
 	int a = 10;
 	int b = 20;
@@ -17,5 +17,6 @@ int main()
 {
 	printf("%d\n", N::a); // 该语句编译出错，无法识别a
     std::cout<<N::Add(N::a,N::b);
+    std::cout<<N::Sub(N::a,N::b);
 	return 0;
 }
