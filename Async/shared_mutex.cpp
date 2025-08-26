@@ -36,6 +36,7 @@ int main()
     for(int i=0;i<4;i++)
     {
         // R_thread.emplace_back(d.read()); 报错 因为在此处d.read()会直接执行，相当于穿的并不是一个函数
+        // R_thread.emplace_back(demo::read,&d);这样也可以
         R_thread.emplace_back(read);//推荐直接配合lambda表达式一起使用
     }
     std::thread W_thread(write);

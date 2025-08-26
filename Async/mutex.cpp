@@ -8,13 +8,13 @@ void create(const int N,int &target)
     std::lock_guard<std::mutex>lock(mtx);//lock_guard就是在获取锁并自动管理锁的释放
     //等价于 std::lock_guard lock(mtx);
     for(int i=0;i<N;i++) target++;
-    // mtx.unlock();
+    mtx.unlock();//虽然guard_lock可以自动管理锁 但也可由用户自己解锁
 }
 void sub(const int N,int &target)
 {
     std::unique_lock<std::mutex>lock(mtx);
     for(int i=0;i<N;i++) target--;
-    // mtx.unlock();
+    mtx.unlock();
 }
 int main()
 {   
