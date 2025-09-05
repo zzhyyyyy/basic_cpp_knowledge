@@ -3,6 +3,7 @@
 #include<thread>
 #include<mutex>
 #include<shared_mutex>
+#include<ctime>
 class demo{
     public:
     void read()
@@ -30,6 +31,7 @@ class demo{
 int main()
 {
     demo d;
+    auto start = std::chrono::high_resolution_clock::now();
     std::vector<std::thread>R_thread;
     auto read = [&](){return d.read();};
     auto write = [&](){return d.write();};
@@ -44,5 +46,8 @@ int main()
     for(int i=0;i<4;i++) R_thread[i].join();//.join()函数只是阻塞main进程 各线程抢占cpu资源与join()函数先后顺序无关
     W_thread.join();
     W_thread1.join();
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "耗时: " << duration.count() << " 毫秒" << std::endl;
     return 0;
 }
