@@ -43,5 +43,7 @@ int main()
     base b;
     std::function<void()>func5=std::bind(&base::fun2,&b);//绑定非静态成员函数需要一个对象实例
     func5();
+    std::function<void(base*)>func6 = &base::fun2;
+    func6(&b);//也可以这种写法
     return 0;
 }
